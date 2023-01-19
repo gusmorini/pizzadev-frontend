@@ -1,4 +1,4 @@
-import { FormEvent, useContext } from "react";
+import { FormEvent, useContext, useState } from "react";
 import Image from "next/image";
 import Head from "@/components/Head";
 import styles from "@/styles/home.module.scss";
@@ -14,12 +14,16 @@ import { AuthContext } from "@/contexts/AuthContext";
 export default function Home() {
   const { signIn } = useContext(AuthContext);
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   async function handleLogin(event: FormEvent) {
+    setLoading(true);
     event.preventDefault();
-    console.log(event);
     const data = {
-      email: "teste@test",
-      password: "123456",
+      email,
+      password,
     };
     await signIn(data);
   }
@@ -31,9 +35,19 @@ export default function Home() {
         <Image src={logoImg} alt="logo pizza dev" />
         <div className={styles.login}>
           <form onSubmit={handleLogin}>
-            <Input name="email" type="email" placeholder="seu e-mail" />
-            <Input name="password" type="password" placeholder="sua senha" />
-            <Button loading={false} type="submit">
+            <Input
+              type="email"
+              placeholder="seu e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="sua senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button loading={loading} type="submit">
               Acessar
             </Button>
           </form>
