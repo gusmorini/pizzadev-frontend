@@ -7,6 +7,10 @@
   border-radius: 0.5rem;
   transition: filter 200ms;
 
+  svg {
+    margin-right: 0.5rem;
+  }
+
   &[disabled] {
     cursor: not-allowed;
     svg {
