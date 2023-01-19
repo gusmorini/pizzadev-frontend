@@ -19,13 +19,19 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   async function handleLogin(event: FormEvent) {
-    setLoading(true);
     event.preventDefault();
+
+    if (!email || !password) {
+      return;
+    }
+
     const data = {
       email,
       password,
     };
+    setLoading(true);
     await signIn(data);
+    setLoading(false);
   }
 
   return (
