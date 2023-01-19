@@ -18,6 +18,9 @@ export default function Home() {
             <Input type={"password"} placeholder="sua senha" />
             <Button loading={false}>Acessar</Button>
           </form>
+          <a href="#" className={styles.link}>
+            Não possui uma conta? Cadastre-se
+          </a>
         </div>
       </div>
     </>
