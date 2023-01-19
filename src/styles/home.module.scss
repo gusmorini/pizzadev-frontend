@@ -12,6 +12,11 @@
   margin-top: 2rem;
   width: 400px;
 
+  h1 {
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
   form {
     display: flex;
     flex-direction: column;
@@ -21,7 +26,7 @@
     }
   }
 
-  a.link {
+  .link {
     margin-top: 1rem;
     color: var(--white);
     display: block;
