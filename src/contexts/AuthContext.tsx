@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useState } from "react";
 import { destroyCookie, setCookie } from "nookies";
+import { toast } from "react-toastify";
 import Router from "next/router";
 import { api } from "@/services/apiClient";
 
@@ -37,8 +38,10 @@ export const AuthContext = createContext({} as AuthContextData);
 export function signOut() {
   try {
     destroyCookie(undefined, "@pizzadev.token");
+    toast.success("Sessão finalizada");
     Router.push("/");
   } catch {
+    toast.error("Erro ao finalizar sessão");
     console.error("error logout");
   }
 }
@@ -68,9 +71,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
-
+      toast.success("Logado com sucesso");
       Router.push("/dashboard");
     } catch (err) {
+      toast.error("Erro ao fazer login");
       console.error("ERROR LOGIN ", err);
     }
   }
@@ -79,8 +83,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const response = await api.post("/users", { name, email, password });
       console.log("USER CREATED", response);
+      toast.success("Usuario cadastrado, faça login");
       Router.push("/");
     } catch (err) {
+      toast.error("Erro ao criar usuário, tente novamente");
       console.error("ERROR SIGNUP ", err);
     }
   }
