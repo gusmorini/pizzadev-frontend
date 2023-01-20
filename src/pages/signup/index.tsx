@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 import { AuthContext } from "@/contexts/AuthContext";
+import { canSSRGuest } from "@/utils/canSSRGuest";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -69,3 +70,9 @@ export default function SignUp() {
     </>
   );
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  };
+});
