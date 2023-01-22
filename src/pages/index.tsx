@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import Head from "@/components/Head";
 import styles from "@/styles/home.module.scss";
-import logoImg from "../../public/logo.svg";
 
 import { Input, TextArea } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -41,7 +40,7 @@ export default function Home() {
     <>
       <Head title="faça seu login" />
       <div className={styles.containerCenter}>
-        <Image src={logoImg} alt="logo pizza dev" />
+        <img src="/logo.svg" alt="logo pizza dev" />
         <div className={styles.login}>
           <form onSubmit={handleLogin}>
             <Input
