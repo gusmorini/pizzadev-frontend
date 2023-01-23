@@ -1,5 +1,8 @@
 import { useState, FormEvent, useEffect } from "react";
 import { toast } from "react-toastify";
+
+import { canSSRAuth } from "@/utils/canSSRAuth";
+
 import styles from "./styles.module.scss";
 import Head from "@/components/Head";
 import Header from "@/components/Header";
@@ -87,3 +90,9 @@ export default function Category() {
     </>
   );
 }
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  return {
+    props: {},
+  };
+});
