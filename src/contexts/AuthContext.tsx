@@ -38,10 +38,10 @@ export const AuthContext = createContext({} as AuthContextData);
 export function signOut() {
   try {
     destroyCookie(undefined, "@pizzadev.token");
-    toast.success("Sessão finalizada");
+    // toast.success("Sessão finalizada");
     Router.push("/");
   } catch {
-    toast.error("Erro ao finalizar sessão");
+    // toast.error("Erro ao finalizar sessão");
     console.error("error logout");
   }
 }
