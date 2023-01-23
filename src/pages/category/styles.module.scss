@@ -1,0 +1,19 @@
+.content {
+  max-width: 512px;
+  margin: 4rem auto;
+
+  h1 {
+    color: var(--white);
+  }
+}
+
+.form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    background: var(--green-900);
+    color: var(--black);
+  }
+}

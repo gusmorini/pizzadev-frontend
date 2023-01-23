@@ -13,11 +13,11 @@ export function Button({ loading, children, ...rest }: ButtonProps) {
     <button className={styles.button} disabled={loading} {...rest}>
       {loading ? (
         <>
-          <FaSpinner color="#fff" size={16} />
-          <span className={styles.text}>aguarde</span>
+          <FaSpinner />
+          Aguarde
         </>
       ) : (
-        <span className={styles.text}>{children}</span>
+        children
       )}
     </button>
   );
