@@ -1,4 +1,5 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
+import { toast } from "react-toastify";
 import styles from "./styles.module.scss";
 import Head from "@/components/Head";
 import Header from "@/components/Header";
@@ -6,15 +7,56 @@ import Header from "@/components/Header";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
+import { api } from "@/services/apiClient";
+
+type ItemResponse = {
+  id: string;
+  name: string;
+};
+
 export default function Category() {
   const [categoryName, setCategoryName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const [categories, setCategories] = useState([]);
+
+  function getCategories() {
+    api
+      .get("/category")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((err) => console.log(err.response.data));
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log("CATEGORY", categoryName);
-  };
+    if (!categoryName) {
+      toast.warn("Preencha o nome da categoria");
+      return;
+    }
+
+    setLoading(true);
+
+    api
+      .post("/category", { name: categoryName })
+      .then((res) => {
+        toast.success(`categoria cadastrada`);
+        getCategories();
+        setCategoryName("");
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("ERROR ", err.response.data);
+        toast.error("categoria já existe");
+        setLoading(false);
+      });
+  }
 
   return (
     <>
@@ -22,11 +64,11 @@ export default function Category() {
       <main className={styles.container}>
         <Header />
         <div className={styles.content}>
-          <h1>Nova categoria</h1>
+          <h1>Cadastrar categoria</h1>
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <Input
-              placeholder="nome nova categoria"
+              placeholder="nome categoria"
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
             />
@@ -34,6 +76,12 @@ export default function Category() {
               Cadastrar
             </Button>
           </form>
+
+          <div className={styles.categories}>
+            {categories.map((item: ItemResponse, index) => (
+              <div key={index}> {item.name}</div>
+            ))}
+          </div>
         </div>
       </main>
     </>
