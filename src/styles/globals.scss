@@ -42,14 +42,11 @@ button {
 .container {
   max-width: 1024px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 @media (max-width: 720px) {
   html {
     font-size: 87.5%;
-  }
-
-  .container {
-    padding: 0 1rem;
   }
 }
