@@ -1,4 +1,4 @@
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent, useEffect, ChangeEvent } from "react";
 import { toast } from "react-toastify";
 
 import { canSSRAuth } from "@/utils/canSSRAuth";
@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 import Head from "@/components/Head";
 import Header from "@/components/Header";
 
-import { Input, Select, TextArea } from "@/components/ui/Input";
+import { Input, Select, TextArea, Files } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
 import { api } from "@/services/apiClient";
@@ -20,8 +20,10 @@ type ItemCategory = {
 
 export default function Product() {
   const [loading, setLoading] = useState(false);
-
   const [categories, setCategories] = useState([]);
+
+  const [file, setFile] = useState({});
+  const [url, setUrl] = useState("");
 
   function getCategories() {
     api
@@ -39,6 +41,25 @@ export default function Product() {
     e.preventDefault();
   }
 
+  function handleUpload(e: ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) {
+      return;
+    }
+
+    const image = e.target.files[0];
+
+    if (!image) {
+      return;
+    }
+
+    if (image.type !== "image/jpeg" && image.type !== "image/png") {
+      return;
+    }
+
+    setUrl(URL.createObjectURL(image));
+    setFile(image);
+  }
+
   useEffect(() => {
     getCategories();
   }, []);
@@ -52,6 +73,11 @@ export default function Product() {
           <h1>Cadastrar produto</h1>
 
           <form className={styles.form} onSubmit={handleSubmit}>
+            <Files
+              accept="image/png, image/jpeg,"
+              url={url}
+              onChange={handleUpload}
+            />
             <Select>
               {categories.map((category: ItemCategory) => (
                 <option key={category.id} value={category.id}>
