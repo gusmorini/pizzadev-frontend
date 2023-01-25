@@ -13,6 +13,10 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   children: ReactNode;
 }
 
+interface UploadProps extends InputHTMLAttributes<HTMLInputElement> {
+  url?: string;
+}
+
 export function Input({ ...rest }: InputProps) {
   return <input className={styles.input} {...rest} />;
 }
@@ -26,5 +30,17 @@ export function Select({ children, ...rest }: SelectProps) {
     <select className={styles.input} {...rest}>
       {children}
     </select>
+  );
+}
+
+export function Files({ url, ...rest }: UploadProps) {
+  return (
+    <div className={styles.upload}>
+      <label>
+        {url && <img src={url} alt="preview" draggable={false} />}
+        <span>+</span>
+        <input type="file" {...rest} />
+      </label>
+    </div>
   );
 }
