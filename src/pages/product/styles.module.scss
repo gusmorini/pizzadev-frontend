@@ -1,0 +1,47 @@
+.content {
+  max-width: 512px;
+  margin: 4rem auto;
+
+  h1 {
+    color: var(--white);
+  }
+}
+
+.form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    background: var(--green-900);
+    color: var(--black);
+  }
+
+  textarea {
+    resize: none;
+  }
+}
+
+.categories {
+  color: var(--gray-100);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+
+  border-top: 1px solid var(--gray-100);
+  padding-top: 2rem;
+  margin-top: 3rem;
+
+  div {
+    margin-top: 0.6rem;
+    padding-left: 1.6rem;
+
+    &::before {
+      content: "➜";
+      color: var(--green-900);
+      font-size: 1.2rem;
+      position: absolute;
+      margin-left: -1.6rem;
+      margin-top: -2px;
+    }
+  }
+}
