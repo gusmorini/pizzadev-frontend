@@ -11,34 +11,67 @@ import { Input, Select, TextArea, Files } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
 import { api } from "@/services/apiClient";
-import { forEachChild, isTemplateExpression } from "typescript";
+import { setupAPIClient } from "@/services/api";
 
-type ItemCategory = {
+type ItemProps = {
   id: string;
   name: string;
 };
 
-export default function Product() {
+interface CategoryProps {
+  categoryList: ItemProps[];
+}
+
+export default function Product({ categoryList }: CategoryProps) {
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
+
+  const [categories, setCategories] = useState(categoryList || []);
+  const [categorySelected, setCategorySelected] = useState(0);
 
   const [file, setFile] = useState({});
   const [url, setUrl] = useState("");
 
-  function getCategories() {
-    api
-      .get("/category")
-      .then((response) => {
-        console.log(response.data);
-        setCategories(response.data);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-      });
-  }
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    const { id: category_id } = categories[categorySelected];
+
+    if (!name || !price || !description || !file || !category_id) {
+      toast.warning("Preencha todos os campos");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const data = new FormData();
+
+      data.append("name", name);
+      data.append("price", price);
+      data.append("description", description);
+      data.append("category_id", category_id);
+      data.append("file", file as Blob);
+
+      const response = await api.post("/product", data);
+
+      toast.success("produto cadastrado");
+
+      setFile({});
+      setCategorySelected(0);
+      setName("");
+      setPrice("");
+      setDescription("");
+      setUrl("");
+    } catch (err) {
+      console.log(err);
+      toast.error("Erro ao criar o produto");
+    }
+
+    setLoading(false);
   }
 
   function handleUpload(e: ChangeEvent<HTMLInputElement>) {
@@ -60,10 +93,6 @@ export default function Product() {
     setFile(image);
   }
 
-  useEffect(() => {
-    getCategories();
-  }, []);
-
   return (
     <>
       <Head title="Novo produto" />
@@ -78,16 +107,32 @@ export default function Product() {
               url={url}
               onChange={handleUpload}
             />
-            <Select>
-              {categories.map((category: ItemCategory) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
+            <Select
+              value={categorySelected}
+              onChange={(e) => setCategorySelected(Number(e.target.value))}
+            >
+              {categories.map((item: ItemProps, index) => (
+                <option key={item.id} value={index}>
+                  {item.name}
                 </option>
               ))}
             </Select>
-            <Input placeholder="nome do item" />
-            <Input placeholder="valor" />
-            <TextArea rows={10} placeholder="descrção"></TextArea>
+            <Input
+              placeholder="nome do item"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <Input
+              placeholder="valor"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <TextArea
+              rows={10}
+              placeholder="descrição"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></TextArea>
             <Button loading={loading} type="submit">
               Cadastrar
             </Button>
@@ -99,7 +144,12 @@ export default function Product() {
 }
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
+  const api = setupAPIClient(ctx);
+  const response = await api.get("/category");
+
   return {
-    props: {},
+    props: {
+      categoryList: response.data,
+    },
   };
 });
