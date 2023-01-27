@@ -11,6 +11,8 @@ import styles from "./styles.module.scss";
 
 import Modal from "react-modal";
 
+import ModalOrder from "@/components/ModalOrder";
+
 type OrderItemProps = {
   id: string;
   table: number | string;
@@ -23,7 +25,7 @@ interface OrderProps {
   orderList: OrderItemProps[];
 }
 
-type ModalItemProps = {
+export type ModalItemProps = {
   id: string;
   amount: number;
   order_id: string;
@@ -50,16 +52,14 @@ export default function Dashboard({ orderList }: OrderProps) {
   const [modalItem, setModalItem] = useState<ModalItemProps[]>();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleVisibleModal = () => {
-    setModalVisible(!modalVisible);
-  };
+  const closeModal = () => setModalVisible(false);
 
   const handleItem = async (id: string) => {
     const api = setupAPIClient();
     const response = await api.get(`/order/${id}`);
 
     setModalItem(response.data);
-    handleVisibleModal();
+    setModalVisible(true);
   };
 
   Modal.setAppElement("#__next");
@@ -89,6 +89,14 @@ export default function Dashboard({ orderList }: OrderProps) {
             })}
           </ul>
         </div>
+
+        {modalVisible && (
+          <ModalOrder
+            isOpen={modalVisible}
+            onRequestClose={closeModal}
+            order={modalItem}
+          />
+        )}
       </div>
     </>
   );
