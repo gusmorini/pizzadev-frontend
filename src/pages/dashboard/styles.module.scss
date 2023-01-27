@@ -1,0 +1,37 @@
+.list {
+  max-width: 512px;
+  margin: 2rem auto;
+
+  button {
+    background: none;
+    border: none;
+  }
+
+  h1 {
+    color: var(--white);
+    button {
+      color: var(--green-900);
+      font-size: 1.4rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  ul {
+    margin-top: 2rem;
+    list-style: none;
+
+    li {
+      background: var(--dark-900);
+      margin-bottom: 0.5rem;
+      border-left: 10px solid var(--green-900);
+    }
+
+    button {
+      padding: 1rem;
+      color: var(--white);
+      width: 100%;
+      text-align: left;
+      font-weight: bold;
+    }
+  }
+}
