@@ -9,7 +9,9 @@ import { setupAPIClient } from "@/services/api";
 
 import styles from "./styles.module.scss";
 
-type OrderItem = {
+import Modal from "react-modal";
+
+type OrderItemProps = {
   id: string;
   table: number | string;
   status: boolean;
@@ -17,18 +19,50 @@ type OrderItem = {
   name: string | null;
 };
 
-interface OrderRequest {
-  orderList: OrderItem[];
+interface OrderProps {
+  orderList: OrderItemProps[];
 }
 
-export default function Dashboard({ orderList }: OrderRequest) {
+type ModalItemProps = {
+  id: string;
+  amount: number;
+  order_id: string;
+  product_id: string;
+  product: {
+    id: string;
+    name: string;
+    description: string;
+    price: string;
+    banner: string;
+  };
+  order: {
+    id: string;
+    table: number | string;
+    status: boolean;
+    draft: boolean;
+    name: string | null;
+  };
+};
+
+export default function Dashboard({ orderList }: OrderProps) {
   const [orders, setOrders] = useState(orderList || []);
+
+  const [modalItem, setModalItem] = useState<ModalItemProps[]>();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleVisibleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const handleItem = async (id: string) => {
     const api = setupAPIClient();
     const response = await api.get(`/order/${id}`);
-    console.log("RESPONSE ", response.data);
+
+    setModalItem(response.data);
+    handleVisibleModal();
   };
+
+  Modal.setAppElement("#__next");
 
   return (
     <>
