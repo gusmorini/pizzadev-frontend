@@ -62,6 +62,8 @@ export default function Dashboard({ orderList }: OrderProps) {
     setModalVisible(true);
   };
 
+  const handleFinishOrder = (id?: string) => {};
+
   Modal.setAppElement("#__next");
 
   return (
@@ -94,6 +96,7 @@ export default function Dashboard({ orderList }: OrderProps) {
           <ModalOrder
             isOpen={modalVisible}
             onRequestClose={closeModal}
+            handleFinishOrder={handleFinishOrder}
             order={modalItem}
           />
         )}

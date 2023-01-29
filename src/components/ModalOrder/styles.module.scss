@@ -1,9 +1,33 @@
+.Modal {
+  background: var(--dark-700);
+  padding: 2rem;
+  width: 90%;
+  max-width: 720px;
+  margin: 2rem auto;
+  position: absolute;
+  top: 0;
+  height: auto;
+}
+
+.Overlay {
+  overflow: auto;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--dark-transparent);
+}
+
 .close {
   background: none;
   border: none;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 2rem;
+  right: 2rem;
   color: var(--white);
   font-size: 1.6rem;
   transition: color 200ms ease;
@@ -27,9 +51,9 @@
       padding: 1rem 0;
       margin: 1rem 0;
 
-      &:last-child {
-        border-bottom: 0;
-      }
+      // &:last-child {
+      //   border-bottom: 0;
+      // }
 
       p {
         display: flex;
@@ -49,48 +73,34 @@
     }
   }
 
-  button {
-    background: var(--dark-900);
-    border: 0;
-    color: var(--green-900);
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    margin-top: 1rem;
-    transition: opacity 200ms ease;
+  .total {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
 
-    &:hover {
-      opacity: 0.8;
+    strong {
+      color: var(--red-900);
+      text-transform: uppercase;
+      margin-right: 2rem;
+    }
+
+    button {
+      background: var(--dark-900);
+      border: 0;
+      color: var(--green-900);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      transition: opacity 200ms ease;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
-}
-
-.total {
-  margin: 2rem 0;
-  display: flex;
-  align-items: center;
-
-  h3 {
-    color: var(--red-900);
-    margin-right: 1rem;
-  }
-}
-
-.Modal {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  right: 40px;
-  bottom: 40px;
-  background: var(--dark-700);
-  padding: 2rem;
-  overflow: auto;
-}
-
-.Overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
 }

@@ -7,30 +7,19 @@ import { ModalItemProps } from "@/pages/dashboard";
 interface ModalOrderProps {
   isOpen: boolean;
   onRequestClose: () => void;
+  handleFinishOrder: (id: string) => void;
   order?: ModalItemProps[];
 }
 
 export default function ModalOrder({
   isOpen,
   onRequestClose,
+  handleFinishOrder,
   order,
 }: ModalOrderProps) {
-  const customStyleModal = {
-    content: {
-      top: "50%",
-      bottom: "auto",
-      left: "50%",
-      right: "auto",
-      padding: "2rem",
-      transform: "translate(-50%, -50%)",
-      backgroundColor: "#1d1d2e",
-    },
-  };
-
-  console.log(order);
-
   const table = order ? order[0].order.table : "";
   let total = 0;
+  const id = order ? order[0].id : "";
 
   const formatMoney = (value: string | number = 0) => {
     return Number(value).toLocaleString("pt-br", {
@@ -43,27 +32,24 @@ export default function ModalOrder({
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      // style={customStyleModal}
       className={styles.Modal}
       overlayClassName={styles.Overlay}
     >
-      <button
+      <a
+        href="#"
         type="button"
         onClick={onRequestClose}
         className={`react-modal-close ${styles.close}`}
       >
         <FiX />
-      </button>
+      </a>
 
       <div className={styles.content}>
-        <h1>Detalhes do pedido</h1>
+        <h2>Detalhes do pedido</h2>
         <h3>Mesa {table} </h3>
         <ul>
           {order?.map((item) => {
-            console.log("ITEM ", item);
-
             total += item.amount * Number(item.product.price) || 0;
-
             return (
               <li>
                 <p>
@@ -78,11 +64,11 @@ export default function ModalOrder({
         </ul>
 
         <div className={styles.total}>
-          <h3>Total</h3>
-          <h4>{formatMoney(total)}</h4>
+          <h4>
+            <strong>Total</strong> {formatMoney(total)}
+          </h4>
+          <button onClick={() => handleFinishOrder(id)}>concluir pedido</button>
         </div>
-
-        <button>concluir pedido</button>
       </div>
     </Modal>
   );
