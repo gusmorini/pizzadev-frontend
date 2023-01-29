@@ -2,7 +2,6 @@ import Modal from "react-modal";
 import styles from "./styles.module.scss";
 
 import { FiX } from "react-icons/fi";
-
 import { ModalItemProps } from "@/pages/dashboard";
 
 interface ModalOrderProps {
@@ -30,11 +29,23 @@ export default function ModalOrder({
 
   console.log(order);
 
+  const table = order ? order[0].order.table : "";
+  let total = 0;
+
+  const formatMoney = (value: string | number = 0) => {
+    return Number(value).toLocaleString("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      style={customStyleModal}
+      // style={customStyleModal}
+      className={styles.Modal}
+      overlayClassName={styles.Overlay}
     >
       <button
         type="button"
@@ -46,15 +57,29 @@ export default function ModalOrder({
 
       <div className={styles.content}>
         <h1>Detalhes do pedido</h1>
-        <h3>Mesa </h3>
+        <h3>Mesa {table} </h3>
         <ul>
-          <li>item 1</li>
-          <li>item 2</li>
+          {order?.map((item) => {
+            console.log("ITEM ", item);
+
+            total += item.amount * Number(item.product.price) || 0;
+
+            return (
+              <li>
+                <p>
+                  {item.amount}
+                  <strong>{item.product.name}</strong>{" "}
+                  {formatMoney(item.product.price)}
+                </p>
+                <small>{item.product.description}</small>
+              </li>
+            );
+          })}
         </ul>
 
         <div className={styles.total}>
           <h3>Total</h3>
-          <h4>R$ 0,00</h4>
+          <h4>{formatMoney(total)}</h4>
         </div>
 
         <button>concluir pedido</button>

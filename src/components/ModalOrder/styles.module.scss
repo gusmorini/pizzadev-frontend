@@ -9,12 +9,11 @@
   transition: color 200ms ease;
 
   &:hover {
-    color: red;
+    color: var(--red-900);
   }
 }
 
 .content {
-  border: 1px solid red;
   color: var(--white);
   margin: 1rem;
 
@@ -24,6 +23,29 @@
 
     li {
       line-height: 1.6rem;
+      border-bottom: 1px solid var(--gray-100);
+      padding: 1rem 0;
+      margin: 1rem 0;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      p {
+        display: flex;
+        justify-content: space-between;
+
+        strong {
+          flex: 1;
+          padding: 0 1rem;
+          color: var(--green-900);
+        }
+      }
+
+      small {
+        font-size: 0.8rem;
+        opacity: 0.6;
+      }
     }
   }
 
@@ -43,9 +65,32 @@
 }
 
 .total {
-  margin: 1rem 0;
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
 
   h3 {
-    color: red;
+    color: var(--red-900);
+    margin-right: 1rem;
   }
+}
+
+.Modal {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  background: var(--dark-700);
+  padding: 2rem;
+  overflow: auto;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
 }
